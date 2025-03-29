@@ -83280,7 +83280,8 @@ var extractTime = function (dateTime) {
     var timePart = dateTime.split("T")[1]; // Extract time part
     if (!timePart)
         return "";
-    return timePart.split("+")[0].split("Z")[0].slice(0, 5); // Remove timezone and keep "HH:mm"
+    var formattedTime = timePart.split("+")[0].split("Z")[0].slice(0, 5); // Remove timezone and keep "HH:mm"
+    return /^\d{2}:\d{2}$/.test(formattedTime) ? formattedTime : ""; // Validate format
 };
 var EventPopup = function (props) {
     var _a;
@@ -83291,8 +83292,8 @@ var EventPopup = function (props) {
             id: (initialData === null || initialData === void 0 ? void 0 : initialData.id) || Date.now().toString(),
             title: (initialData === null || initialData === void 0 ? void 0 : initialData.title) || "",
             start: ((_a = initialData === null || initialData === void 0 ? void 0 : initialData.start) === null || _a === void 0 ? void 0 : _a.split("T")[0]) || "",
-            startTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.start),
-            endTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.end),
+            startTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.start) || "00:00",
+            endTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.end) || "00:00",
             notes: (initialData === null || initialData === void 0 ? void 0 : initialData.notes) || "",
             color: (initialData === null || initialData === void 0 ? void 0 : initialData.color) || "#000000",
         },
@@ -83303,8 +83304,8 @@ var EventPopup = function (props) {
             id: (initialData === null || initialData === void 0 ? void 0 : initialData.id) || Date.now().toString(),
             title: (initialData === null || initialData === void 0 ? void 0 : initialData.title) || "",
             start: ((_a = initialData === null || initialData === void 0 ? void 0 : initialData.start) === null || _a === void 0 ? void 0 : _a.split("T")[0]) || "",
-            startTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.start),
-            endTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.end),
+            startTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.start) || "00:00",
+            endTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.end) || "00:00",
             notes: (initialData === null || initialData === void 0 ? void 0 : initialData.notes) || "",
             color: (initialData === null || initialData === void 0 ? void 0 : initialData.color) || "#000000",
         });
@@ -83320,7 +83321,7 @@ var EventPopup = function (props) {
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], { open: open, onClose: onClose },
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, mode === "edit" ? "Edit Event" : "Create Event"),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null,
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", { onSubmit: handleSubmit(onSubmit) },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", { onSubmit: handleSubmit(onSubmit), autoComplete: "off" },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_3__.Controller, { name: "title", control: control, render: function (_a) {
                         var _b;
                         var field = _a.field;

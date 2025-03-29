@@ -25,7 +25,8 @@ const extractTime = (dateTime: string | undefined): string => {
   if (!dateTime) return "";
   const timePart = dateTime.split("T")[1]; // Extract time part
   if (!timePart) return "";
-  return timePart.split("+")[0].split("Z")[0].slice(0, 5); // Remove timezone and keep "HH:mm"
+  const formattedTime = timePart.split("+")[0].split("Z")[0].slice(0, 5); // Remove timezone and keep "HH:mm"
+  return /^\d{2}:\d{2}$/.test(formattedTime) ? formattedTime : ""; // Validate format
 };
 
 const EventPopup: FC<EventPopupProps> = (props) => {
@@ -50,8 +51,8 @@ const EventPopup: FC<EventPopupProps> = (props) => {
       id: initialData?.id || Date.now().toString(),
       title: initialData?.title || "",
       start: initialData?.start?.split("T")[0] || "",
-      startTime: extractTime(initialData?.start),
-      endTime: extractTime(initialData?.end),
+      startTime: extractTime(initialData?.start) || "00:00",
+      endTime: extractTime(initialData?.end) || "00:00",
       notes: initialData?.notes || "",
       color: initialData?.color || "#000000",
     },
@@ -62,8 +63,8 @@ const EventPopup: FC<EventPopupProps> = (props) => {
       id: initialData?.id || Date.now().toString(),
       title: initialData?.title || "",
       start: initialData?.start?.split("T")[0] || "",
-      startTime: extractTime(initialData?.start),
-      endTime: extractTime(initialData?.end),
+      startTime: extractTime(initialData?.start) || "00:00",
+      endTime: extractTime(initialData?.end) || "00:00",
       notes: initialData?.notes || "", // Ensure notes are reset properly
       color: initialData?.color || "#000000",
     });
@@ -88,7 +89,7 @@ const EventPopup: FC<EventPopupProps> = (props) => {
         {mode === "edit" ? "Edit Event" : "Create Event"}
       </DialogTitle>
       <DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <Controller
             name="title"
             control={control}
