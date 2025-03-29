@@ -94609,20 +94609,19 @@ __webpack_require__.r(__webpack_exports__);
 
 var App = function () {
     var home = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.home, dashboard = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.dashboard, inbox = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.inbox, products = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.products, calendar = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.calendar;
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.BrowserRouter, { basename: "/calendar-react-test-task" },
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { style: { display: "flex", flexDirection: "column", height: "100vh" } },
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", { style: { background: "#6200ea", color: "#fff", padding: "10px 20px" } },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "My App")),
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { style: { display: "flex", flex: 1 } },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Sidebar_Sidebar__WEBPACK_IMPORTED_MODULE_1__["default"], null),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { style: { flex: 1, padding: "20px" } },
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Routes, null,
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: home.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_HomePage__WEBPACK_IMPORTED_MODULE_3__["default"], null) }),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: dashboard.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_DashboardPage__WEBPACK_IMPORTED_MODULE_4__["default"], null) }),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: inbox.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_InboxPage__WEBPACK_IMPORTED_MODULE_5__["default"], null) }),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: products.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_ProductsPage__WEBPACK_IMPORTED_MODULE_6__["default"], null) }),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: calendar.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_CalendarPage__WEBPACK_IMPORTED_MODULE_7__["default"], null) }),
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: "*", element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "Page Not Found") })))))));
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { style: { display: "flex", flexDirection: "column", height: "100vh" } },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", { style: { background: "#6200ea", color: "#fff", padding: "10px 20px" } },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "My App")),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { style: { display: "flex", flex: 1 } },
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Sidebar_Sidebar__WEBPACK_IMPORTED_MODULE_1__["default"], null),
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { style: { flex: 1, padding: "20px" } },
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Routes, null,
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: home.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_HomePage__WEBPACK_IMPORTED_MODULE_3__["default"], null) }),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: dashboard.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_DashboardPage__WEBPACK_IMPORTED_MODULE_4__["default"], null) }),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: inbox.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_InboxPage__WEBPACK_IMPORTED_MODULE_5__["default"], null) }),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: products.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_ProductsPage__WEBPACK_IMPORTED_MODULE_6__["default"], null) }),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: calendar.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_CalendarPage__WEBPACK_IMPORTED_MODULE_7__["default"], null) }),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: "*", element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "Page Not Found") }))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
 
@@ -95408,12 +95407,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App */ "./src/App.tsx");
 /* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./index.css */ "./src/index.css");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/development/chunk-GNGMS2XR.mjs");
+
 
 
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.render)(react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_App__WEBPACK_IMPORTED_MODULE_2__["default"], null), document.body.appendChild(document.createElement("div")));
+    (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.render)(react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.HashRouter, null,
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_App__WEBPACK_IMPORTED_MODULE_2__["default"], null)), document.body.appendChild(document.createElement("div")));
 });
 
 })();
