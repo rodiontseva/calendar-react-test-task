@@ -30,7 +30,6 @@ const extractTime = (dateTime: string | undefined): string => {
 
 const EventPopup: FC<EventPopupProps> = (props) => {
   const { open, onClose, onSave, onDelete, initialData, mode } = props;
-  console.log(initialData);
 
   const {
     control,
@@ -76,8 +75,6 @@ const EventPopup: FC<EventPopupProps> = (props) => {
       start: `${data.start}T${data.startTime}`, // Combine date and start time
       end: `${data.start}T${data.endTime}`, // Combine date and end time
     };
-    console.log("Event data:", event);
-
     onSave(event);
     reset();
     onClose();

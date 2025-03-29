@@ -6,7 +6,6 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useEventContext } from "../../context/EventContext";
 import EventPopup from "./EventPopup";
-import { addDays } from "@fullcalendar/core/internal";
 
 const Calendar = () => {
   const { events, updateEvent, removeEvent, addEvent } = useEventContext();
@@ -15,7 +14,7 @@ const Calendar = () => {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
 
   const handleDateClick = useCallback((arg: any) => {
-    setSelectedEvent({ start: arg.dateStr, end: arg.dateStr }); // Prefill with clicked date
+    setSelectedEvent({ start: arg.dateStr, end: arg.dateStr });
     setPopupMode("create");
     setPopupOpen(true);
   }, []);
@@ -40,16 +39,16 @@ const Calendar = () => {
 
   const handleSave = (eventData: any) => {
     if (popupMode === "edit") {
-      updateEvent(eventData); // Update event in context
+      updateEvent(eventData);
     } else {
-      addEvent({ ...eventData, notes: eventData.notes || "" }); // Add notes if provided
+      addEvent({ ...eventData, notes: eventData.notes || "" });
     }
     handleClose();
   };
 
   const handleDelete = () => {
     if (selectedEvent?.id) {
-      removeEvent(selectedEvent.id); // Delete event in context
+      removeEvent(selectedEvent.id);
     }
     handleClose();
   };
@@ -62,6 +61,29 @@ const Calendar = () => {
     color: event.color,
     notes: event.notes,
   }));
+
+  const handleEventChange = (changeInfo: any) => {
+    const updatedEvent = {
+      id: changeInfo.event.id,
+      title: changeInfo.event.title,
+      start: changeInfo.event.startStr,
+      end: changeInfo.event.endStr,
+      startTime: changeInfo.event.start?.toISOString() || "",
+      endTime: changeInfo.event.end?.toISOString() || "",
+      color: changeInfo.event.backgroundColor,
+      notes: changeInfo.event.extendedProps.notes,
+    };
+
+    updateEvent(updatedEvent);
+  };
+
+  const renderEventContent = (eventContent: any) => {
+    return (
+      <>
+        <div>{eventContent.event.title}</div>
+      </>
+    );
+  };
 
   return (
     <div>
@@ -79,6 +101,8 @@ const Calendar = () => {
         selectable={true}
         eventContent={renderEventContent}
         eventClick={handleEventClick}
+        eventChange={handleEventChange}
+        dayMaxEvents={true}
       />
       <EventPopup
         open={dialogOpen}
@@ -93,11 +117,3 @@ const Calendar = () => {
 };
 
 export default Calendar;
-
-function renderEventContent(eventContent: any) {
-  return (
-    <>
-      <div>{eventContent.event.title}</div>
-    </>
-  );
-}

@@ -83161,7 +83161,7 @@ var Calendar = function () {
     var _c = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("create"), popupMode = _c[0], setPopupMode = _c[1];
     var _d = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null), selectedEvent = _d[0], setSelectedEvent = _d[1];
     var handleDateClick = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (arg) {
-        setSelectedEvent({ start: arg.dateStr, end: arg.dateStr }); // Prefill with clicked date
+        setSelectedEvent({ start: arg.dateStr, end: arg.dateStr });
         setPopupMode("create");
         setPopupOpen(true);
     }, []);
@@ -83183,16 +83183,16 @@ var Calendar = function () {
     };
     var handleSave = function (eventData) {
         if (popupMode === "edit") {
-            updateEvent(eventData); // Update event in context
+            updateEvent(eventData);
         }
         else {
-            addEvent(__assign(__assign({}, eventData), { notes: eventData.notes || "" })); // Add notes if provided
+            addEvent(__assign(__assign({}, eventData), { notes: eventData.notes || "" }));
         }
         handleClose();
     };
     var handleDelete = function () {
         if (selectedEvent === null || selectedEvent === void 0 ? void 0 : selectedEvent.id) {
-            removeEvent(selectedEvent.id); // Delete event in context
+            removeEvent(selectedEvent.id);
         }
         handleClose();
     };
@@ -83204,19 +83204,33 @@ var Calendar = function () {
         color: event.color,
         notes: event.notes,
     }); });
+    var handleEventChange = function (changeInfo) {
+        var _a, _b;
+        var updatedEvent = {
+            id: changeInfo.event.id,
+            title: changeInfo.event.title,
+            start: changeInfo.event.startStr,
+            end: changeInfo.event.endStr,
+            startTime: ((_a = changeInfo.event.start) === null || _a === void 0 ? void 0 : _a.toISOString()) || "",
+            endTime: ((_b = changeInfo.event.end) === null || _b === void 0 ? void 0 : _b.toISOString()) || "",
+            color: changeInfo.event.backgroundColor,
+            notes: changeInfo.event.extendedProps.notes,
+        };
+        updateEvent(updatedEvent);
+    };
+    var renderEventContent = function (eventContent) {
+        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null,
+            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, eventContent.event.title)));
+    };
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_fullcalendar_react__WEBPACK_IMPORTED_MODULE_3__["default"], { plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_4__["default"], _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_5__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_6__["default"]], headerToolbar: {
                 left: "prev,next today",
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay",
-            }, initialView: "dayGridMonth", events: calendarEvents, dateClick: handleDateClick, editable: true, selectable: true, eventContent: renderEventContent, eventClick: handleEventClick }),
+            }, initialView: "dayGridMonth", events: calendarEvents, dateClick: handleDateClick, editable: true, selectable: true, eventContent: renderEventContent, eventClick: handleEventClick, eventChange: handleEventChange, dayMaxEvents: true }),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_EventPopup__WEBPACK_IMPORTED_MODULE_2__["default"], { open: dialogOpen, onClose: handleClose, onSave: handleSave, onDelete: handleDelete, initialData: selectedEvent, mode: popupMode })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Calendar);
-function renderEventContent(eventContent) {
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null,
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, eventContent.event.title)));
-}
 
 
 /***/ }),
@@ -83271,7 +83285,6 @@ var extractTime = function (dateTime) {
 var EventPopup = function (props) {
     var _a;
     var open = props.open, onClose = props.onClose, onSave = props.onSave, onDelete = props.onDelete, initialData = props.initialData, mode = props.mode;
-    console.log(initialData);
     var _b = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_3__.useForm)({
         resolver: (0,_hookform_resolvers_yup__WEBPACK_IMPORTED_MODULE_1__.yupResolver)(_validation_eventSchema__WEBPACK_IMPORTED_MODULE_2__["default"]),
         defaultValues: {
@@ -83298,7 +83311,6 @@ var EventPopup = function (props) {
     }, [initialData, reset]);
     var onSubmit = function (data) {
         var event = __assign(__assign({}, data), { start: "".concat(data.start, "T").concat(data.startTime), end: "".concat(data.start, "T").concat(data.endTime) });
-        console.log("Event data:", event);
         onSave(event);
         reset();
         onClose();
