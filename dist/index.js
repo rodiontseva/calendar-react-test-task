@@ -94608,8 +94608,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var App = function () {
-    var dashboard = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.dashboard, inbox = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.inbox, products = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.products, calendar = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.calendar;
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.BrowserRouter, null,
+    var home = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.home, dashboard = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.dashboard, inbox = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.inbox, products = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.products, calendar = _consts_menuItems__WEBPACK_IMPORTED_MODULE_2__.menuItems.calendar;
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.BrowserRouter, { basename: "/calendar-react-test-task" },
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { style: { display: "flex", flexDirection: "column", height: "100vh" } },
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", { style: { background: "#6200ea", color: "#fff", padding: "10px 20px" } },
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "My App")),
@@ -94617,7 +94617,7 @@ var App = function () {
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Sidebar_Sidebar__WEBPACK_IMPORTED_MODULE_1__["default"], null),
                 react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { style: { flex: 1, padding: "20px" } },
                     react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Routes, null,
-                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: "", element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_HomePage__WEBPACK_IMPORTED_MODULE_3__["default"], null) }),
+                        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: home.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_HomePage__WEBPACK_IMPORTED_MODULE_3__["default"], null) }),
                         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: dashboard.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_DashboardPage__WEBPACK_IMPORTED_MODULE_4__["default"], null) }),
                         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: inbox.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_InboxPage__WEBPACK_IMPORTED_MODULE_5__["default"], null) }),
                         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, { path: products.url, element: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_pages_ProductsPage__WEBPACK_IMPORTED_MODULE_6__["default"], null) }),

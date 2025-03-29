@@ -9,9 +9,9 @@ import ProductsPage from "./pages/ProductsPage";
 import CalendarPage from "./pages/CalendarPage";
 
 const App: React.FC = () => {
-  const { dashboard, inbox, products, calendar } = menuItems;
+  const { home, dashboard, inbox, products, calendar } = menuItems;
   return (
-    <Router>
+    <Router basename="/calendar-react-test-task">
       <div
         style={{ display: "flex", flexDirection: "column", height: "100vh" }}
       >
@@ -26,7 +26,7 @@ const App: React.FC = () => {
 
           <div style={{ flex: 1, padding: "20px" }}>
             <Routes>
-              <Route path="" element={<HomePage />} />
+              <Route path={home.url} element={<HomePage />} />
               <Route path={dashboard.url} element={<DashboardPage />} />
               <Route path={inbox.url} element={<InboxPage />} />
               <Route path={products.url} element={<ProductsPage />} />
