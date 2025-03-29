@@ -83218,16 +83218,12 @@ var Calendar = function () {
         };
         updateEvent(updatedEvent);
     };
-    var renderEventContent = function (eventContent) {
-        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null,
-            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, eventContent.event.title)));
-    };
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_fullcalendar_react__WEBPACK_IMPORTED_MODULE_3__["default"], { plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_4__["default"], _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_5__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_6__["default"]], headerToolbar: {
                 left: "prev,next today",
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay",
-            }, initialView: "dayGridMonth", events: calendarEvents, dateClick: handleDateClick, editable: true, selectable: true, eventContent: renderEventContent, eventClick: handleEventClick, eventChange: handleEventChange, dayMaxEvents: true }),
+            }, initialView: "dayGridMonth", events: calendarEvents, dateClick: handleDateClick, editable: true, selectable: true, displayEventTime: false, eventClick: handleEventClick, eventChange: handleEventChange, dayMaxEvents: true, eventDisplay: "block" }),
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_EventPopup__WEBPACK_IMPORTED_MODULE_2__["default"], { open: dialogOpen, onClose: handleClose, onSave: handleSave, onDelete: handleDelete, initialData: selectedEvent, mode: popupMode })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Calendar);

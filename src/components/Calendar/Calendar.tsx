@@ -77,14 +77,6 @@ const Calendar = () => {
     updateEvent(updatedEvent);
   };
 
-  const renderEventContent = (eventContent: any) => {
-    return (
-      <>
-        <div>{eventContent.event.title}</div>
-      </>
-    );
-  };
-
   return (
     <div>
       <FullCalendar
@@ -99,10 +91,11 @@ const Calendar = () => {
         dateClick={handleDateClick}
         editable={true}
         selectable={true}
-        eventContent={renderEventContent}
+        displayEventTime={false}
         eventClick={handleEventClick}
         eventChange={handleEventChange}
         dayMaxEvents={true}
+        eventDisplay="block"
       />
       <EventPopup
         open={dialogOpen}
