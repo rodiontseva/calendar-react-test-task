@@ -12,10 +12,16 @@ const eventSchema = yup.object().shape({
   start: yup
     .string()
     .required("Start date is required")
-    .test("is-future-date", "Start date must be in the future", (value) => {
-      const date = new Date(value);
-      return !isNaN(date.getTime()) && date > new Date(); // Ensure valid date and future comparison
-    }),
+    .test(
+      "is-valid-date",
+      "Start date must be today or in the future",
+      (value) => {
+        const date = new Date(value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to midnight for comparison
+        return !isNaN(date.getTime()) && date >= today; // Ensure valid date and allow today or future
+      }
+    ),
   startTime: yup.string().required("Start time is required"),
   endTime: yup
     .string()

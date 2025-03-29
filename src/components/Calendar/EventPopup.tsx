@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -10,21 +10,27 @@ import {
   TextField,
 } from "@mui/material";
 import eventSchema from "../../validation/eventSchema";
-// import { useEventStore } from "../../utils/useEventStore";
-import { useEventContext } from "../../context/EventContext";
 
-//interface for the EventPopup component
 interface EventPopupProps {
   open: boolean;
   onClose: () => void;
-  initialDate: string | null;
+  onSave: (eventData: any) => void;
+  onDelete?: () => void;
+  initialData?: any; // Prefilled data for editing
+  mode: "create" | "edit"; // Mode to differentiate between creating and editing
 }
 
-const EventPopup: FC<EventPopupProps> = (props) => {
-  const { open, onClose, initialDate } = props;
+// Helper function to extract time in "HH:mm" format
+const extractTime = (dateTime: string | undefined): string => {
+  if (!dateTime) return "";
+  const timePart = dateTime.split("T")[1]; // Extract time part
+  if (!timePart) return "";
+  return timePart.split("+")[0].split("Z")[0].slice(0, 5); // Remove timezone and keep "HH:mm"
+};
 
-  // const { addEvent } = useEventStore();
-  const { addEvent } = useEventContext();
+const EventPopup: FC<EventPopupProps> = (props) => {
+  const { open, onClose, onSave, onDelete, initialData, mode } = props;
+  console.log(initialData);
 
   const {
     control,
@@ -42,15 +48,27 @@ const EventPopup: FC<EventPopupProps> = (props) => {
   }>({
     resolver: yupResolver(eventSchema),
     defaultValues: {
-      id: Date.now().toString(),
-      title: "",
-      start: initialDate || new Date().toISOString().split("T")[0],
-      startTime: "",
-      endTime: "",
-      notes: "",
-      color: "#000000",
+      id: initialData?.id || Date.now().toString(),
+      title: initialData?.title || "",
+      start: initialData?.start?.split("T")[0] || "",
+      startTime: extractTime(initialData?.start),
+      endTime: extractTime(initialData?.end),
+      notes: initialData?.notes || "",
+      color: initialData?.color || "#000000",
     },
   });
+
+  useEffect(() => {
+    reset({
+      id: initialData?.id || Date.now().toString(),
+      title: initialData?.title || "",
+      start: initialData?.start?.split("T")[0] || "",
+      startTime: extractTime(initialData?.start),
+      endTime: extractTime(initialData?.end),
+      notes: initialData?.notes || "", // Ensure notes are reset properly
+      color: initialData?.color || "#000000",
+    });
+  }, [initialData, reset]);
 
   const onSubmit = (data: any) => {
     const event = {
@@ -58,21 +76,20 @@ const EventPopup: FC<EventPopupProps> = (props) => {
       start: `${data.start}T${data.startTime}`, // Combine date and start time
       end: `${data.start}T${data.endTime}`, // Combine date and end time
     };
-    //if allDay is true, set start and end to the same date without time
-    if (data.allDay) {
-      event.start = data.start;
-      event.end = data.start;
-    }
-    console.log("Form data:", event);
+    console.log("Event data:", event);
 
-    addEvent(event);
+    onSave(event);
     reset();
     onClose();
   };
 
+  if (!open) return null;
+
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add Event</DialogTitle>
+      <DialogTitle>
+        {mode === "edit" ? "Edit Event" : "Create Event"}
+      </DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
@@ -134,7 +151,6 @@ const EventPopup: FC<EventPopupProps> = (props) => {
               />
             )}
           />
-
           <Controller
             name="notes"
             control={control}
@@ -154,14 +170,24 @@ const EventPopup: FC<EventPopupProps> = (props) => {
           <Controller
             name="color"
             control={control}
-            render={({ field }) => <input {...field} type="color" />}
+            render={({ field }) => (
+              <div style={{ marginTop: "1rem" }}>
+                <label>Color:</label>
+                <input {...field} type="color" />
+              </div>
+            )}
           />
           <DialogActions>
+            {mode === "edit" && onDelete && (
+              <Button onClick={onDelete} color="secondary">
+                Discard
+              </Button>
+            )}
+            <Button type="submit" color="primary">
+              {mode === "edit" ? "Save" : "Create"}
+            </Button>
             <Button onClick={onClose} color="secondary">
               Cancel
-            </Button>
-            <Button type="submit" color="primary">
-              Save
             </Button>
           </DialogActions>
         </form>

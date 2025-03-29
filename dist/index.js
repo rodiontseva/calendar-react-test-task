@@ -83137,6 +83137,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fullcalendar/interaction */ "./node_modules/@fullcalendar/interaction/index.js");
 /* harmony import */ var _context_EventContext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../context/EventContext */ "./src/context/EventContext.tsx");
 /* harmony import */ var _EventPopup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EventPopup */ "./src/components/Calendar/EventPopup.tsx");
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 
 
 
@@ -83145,16 +83156,45 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Calendar = function () {
-    var events = (0,_context_EventContext__WEBPACK_IMPORTED_MODULE_1__.useEventContext)().events;
-    var _a = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false), dialogOpen = _a[0], setPopupOpen = _a[1];
-    var _b = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null), selectedDate = _b[0], setSelectedDate = _b[1];
+    var _a = (0,_context_EventContext__WEBPACK_IMPORTED_MODULE_1__.useEventContext)(), events = _a.events, updateEvent = _a.updateEvent, removeEvent = _a.removeEvent, addEvent = _a.addEvent;
+    var _b = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false), dialogOpen = _b[0], setPopupOpen = _b[1];
+    var _c = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("create"), popupMode = _c[0], setPopupMode = _c[1];
+    var _d = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null), selectedEvent = _d[0], setSelectedEvent = _d[1];
     var handleDateClick = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (arg) {
-        setSelectedDate(arg.dateStr);
+        setSelectedEvent({ start: arg.dateStr, end: arg.dateStr }); // Prefill with clicked date
+        setPopupMode("create");
         setPopupOpen(true);
     }, []);
+    var handleEventClick = function (clickInfo) {
+        setSelectedEvent({
+            id: clickInfo.event.id,
+            title: clickInfo.event.title,
+            start: clickInfo.event.startStr,
+            end: clickInfo.event.endStr,
+            color: clickInfo.event.backgroundColor,
+            notes: clickInfo.event.extendedProps.notes,
+        });
+        setPopupMode("edit");
+        setPopupOpen(true);
+    };
     var handleClose = function () {
         setPopupOpen(false);
-        setSelectedDate(null);
+        setSelectedEvent(null);
+    };
+    var handleSave = function (eventData) {
+        if (popupMode === "edit") {
+            updateEvent(eventData); // Update event in context
+        }
+        else {
+            addEvent(__assign(__assign({}, eventData), { notes: eventData.notes || "" })); // Add notes if provided
+        }
+        handleClose();
+    };
+    var handleDelete = function () {
+        if (selectedEvent === null || selectedEvent === void 0 ? void 0 : selectedEvent.id) {
+            removeEvent(selectedEvent.id); // Delete event in context
+        }
+        handleClose();
     };
     var calendarEvents = events.map(function (event) { return ({
         id: event.id,
@@ -83162,15 +83202,15 @@ var Calendar = function () {
         start: event.start,
         end: event.end,
         color: event.color,
+        notes: event.notes,
     }); });
-    console.log("Events from context:", events);
     return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null,
         react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_fullcalendar_react__WEBPACK_IMPORTED_MODULE_3__["default"], { plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_4__["default"], _fullcalendar_timegrid__WEBPACK_IMPORTED_MODULE_5__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_6__["default"]], headerToolbar: {
                 left: "prev,next today",
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay",
-            }, initialView: "dayGridMonth", events: calendarEvents, dateClick: handleDateClick, editable: true, selectable: true, eventContent: renderEventContent }),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_EventPopup__WEBPACK_IMPORTED_MODULE_2__["default"], { open: dialogOpen, onClose: handleClose, initialDate: selectedDate })));
+            }, initialView: "dayGridMonth", events: calendarEvents, dateClick: handleDateClick, editable: true, selectable: true, eventContent: renderEventContent, eventClick: handleEventClick }),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_EventPopup__WEBPACK_IMPORTED_MODULE_2__["default"], { open: dialogOpen, onClose: handleClose, onSave: handleSave, onDelete: handleDelete, initialData: selectedEvent, mode: popupMode })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Calendar);
 function renderEventContent(eventContent) {
@@ -83194,16 +83234,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
 /* harmony import */ var _hookform_resolvers_yup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hookform/resolvers/yup */ "./node_modules/@hookform/resolvers/yup/dist/yup.mjs");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Dialog/Dialog.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/DialogTitle/DialogTitle.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/DialogContent/DialogContent.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/TextField/TextField.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/DialogActions/DialogActions.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Button/Button.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Dialog/Dialog.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/DialogTitle/DialogTitle.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/DialogContent/DialogContent.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/TextField/TextField.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/DialogActions/DialogActions.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/esm/Button/Button.js");
 /* harmony import */ var _validation_eventSchema__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../validation/eventSchema */ "./src/validation/eventSchema.ts");
-/* harmony import */ var _context_EventContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../context/EventContext */ "./src/context/EventContext.tsx");
 var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -83220,72 +83259,91 @@ var __assign = (undefined && undefined.__assign) || function () {
 
 
 
-// import { useEventStore } from "../../utils/useEventStore";
-
+// Helper function to extract time in "HH:mm" format
+var extractTime = function (dateTime) {
+    if (!dateTime)
+        return "";
+    var timePart = dateTime.split("T")[1]; // Extract time part
+    if (!timePart)
+        return "";
+    return timePart.split("+")[0].split("Z")[0].slice(0, 5); // Remove timezone and keep "HH:mm"
+};
 var EventPopup = function (props) {
-    var open = props.open, onClose = props.onClose, initialDate = props.initialDate;
-    // const { addEvent } = useEventStore();
-    var addEvent = (0,_context_EventContext__WEBPACK_IMPORTED_MODULE_3__.useEventContext)().addEvent;
-    var _a = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_4__.useForm)({
+    var _a;
+    var open = props.open, onClose = props.onClose, onSave = props.onSave, onDelete = props.onDelete, initialData = props.initialData, mode = props.mode;
+    console.log(initialData);
+    var _b = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_3__.useForm)({
         resolver: (0,_hookform_resolvers_yup__WEBPACK_IMPORTED_MODULE_1__.yupResolver)(_validation_eventSchema__WEBPACK_IMPORTED_MODULE_2__["default"]),
         defaultValues: {
-            id: Date.now().toString(),
-            title: "",
-            start: initialDate || new Date().toISOString().split("T")[0],
-            startTime: "",
-            endTime: "",
-            notes: "",
-            color: "#000000",
+            id: (initialData === null || initialData === void 0 ? void 0 : initialData.id) || Date.now().toString(),
+            title: (initialData === null || initialData === void 0 ? void 0 : initialData.title) || "",
+            start: ((_a = initialData === null || initialData === void 0 ? void 0 : initialData.start) === null || _a === void 0 ? void 0 : _a.split("T")[0]) || "",
+            startTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.start),
+            endTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.end),
+            notes: (initialData === null || initialData === void 0 ? void 0 : initialData.notes) || "",
+            color: (initialData === null || initialData === void 0 ? void 0 : initialData.color) || "#000000",
         },
-    }), control = _a.control, handleSubmit = _a.handleSubmit, errors = _a.formState.errors, reset = _a.reset;
+    }), control = _b.control, handleSubmit = _b.handleSubmit, errors = _b.formState.errors, reset = _b.reset;
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+        var _a;
+        reset({
+            id: (initialData === null || initialData === void 0 ? void 0 : initialData.id) || Date.now().toString(),
+            title: (initialData === null || initialData === void 0 ? void 0 : initialData.title) || "",
+            start: ((_a = initialData === null || initialData === void 0 ? void 0 : initialData.start) === null || _a === void 0 ? void 0 : _a.split("T")[0]) || "",
+            startTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.start),
+            endTime: extractTime(initialData === null || initialData === void 0 ? void 0 : initialData.end),
+            notes: (initialData === null || initialData === void 0 ? void 0 : initialData.notes) || "",
+            color: (initialData === null || initialData === void 0 ? void 0 : initialData.color) || "#000000",
+        });
+    }, [initialData, reset]);
     var onSubmit = function (data) {
         var event = __assign(__assign({}, data), { start: "".concat(data.start, "T").concat(data.startTime), end: "".concat(data.start, "T").concat(data.endTime) });
-        //if allDay is true, set start and end to the same date without time
-        if (data.allDay) {
-            event.start = data.start;
-            event.end = data.start;
-        }
-        console.log("Form data:", event);
-        addEvent(event);
+        console.log("Event data:", event);
+        onSave(event);
         reset();
         onClose();
     };
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], { open: open, onClose: onClose },
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null, "Add Event"),
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], null,
+    if (!open)
+        return null;
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], { open: open, onClose: onClose },
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, mode === "edit" ? "Edit Event" : "Create Event"),
+        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null,
             react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", { onSubmit: handleSubmit(onSubmit) },
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_4__.Controller, { name: "title", control: control, render: function (_a) {
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_3__.Controller, { name: "title", control: control, render: function (_a) {
                         var _b;
                         var field = _a.field;
-                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], __assign({}, field, { label: "Title", error: !!errors.title, helperText: (_b = errors.title) === null || _b === void 0 ? void 0 : _b.message, fullWidth: true, margin: "dense" })));
+                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], __assign({}, field, { label: "Title", error: !!errors.title, helperText: (_b = errors.title) === null || _b === void 0 ? void 0 : _b.message, fullWidth: true, margin: "dense" })));
                     } }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_4__.Controller, { name: "start", control: control, render: function (_a) {
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_3__.Controller, { name: "start", control: control, render: function (_a) {
                         var _b;
                         var field = _a.field;
-                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], __assign({}, field, { label: "Start Date", type: "date", error: !!errors.start, helperText: (_b = errors.start) === null || _b === void 0 ? void 0 : _b.message, fullWidth: true, margin: "dense" })));
+                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], __assign({}, field, { label: "Start Date", type: "date", error: !!errors.start, helperText: (_b = errors.start) === null || _b === void 0 ? void 0 : _b.message, fullWidth: true, margin: "dense" })));
                     } }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_4__.Controller, { name: "startTime", control: control, render: function (_a) {
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_3__.Controller, { name: "startTime", control: control, render: function (_a) {
                         var _b;
                         var field = _a.field;
-                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], __assign({}, field, { label: "Start Time", type: "time", error: !!errors.startTime, helperText: (_b = errors.startTime) === null || _b === void 0 ? void 0 : _b.message, fullWidth: true, margin: "dense" })));
+                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], __assign({}, field, { label: "Start Time", type: "time", error: !!errors.startTime, helperText: (_b = errors.startTime) === null || _b === void 0 ? void 0 : _b.message, fullWidth: true, margin: "dense" })));
                     } }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_4__.Controller, { name: "endTime", control: control, render: function (_a) {
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_3__.Controller, { name: "endTime", control: control, render: function (_a) {
                         var _b;
                         var field = _a.field;
-                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], __assign({}, field, { label: "End Time", type: "time", error: !!errors.endTime, helperText: (_b = errors.endTime) === null || _b === void 0 ? void 0 : _b.message, fullWidth: true, margin: "dense" })));
+                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], __assign({}, field, { label: "End Time", type: "time", error: !!errors.endTime, helperText: (_b = errors.endTime) === null || _b === void 0 ? void 0 : _b.message, fullWidth: true, margin: "dense" })));
                     } }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_4__.Controller, { name: "notes", control: control, render: function (_a) {
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_3__.Controller, { name: "notes", control: control, render: function (_a) {
                         var _b;
                         var field = _a.field;
-                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], __assign({}, field, { label: "Notes", multiline: true, rows: 3, error: !!errors.notes, helperText: (_b = errors.notes) === null || _b === void 0 ? void 0 : _b.message, fullWidth: true, margin: "dense" })));
+                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], __assign({}, field, { label: "Notes", multiline: true, rows: 3, error: !!errors.notes, helperText: (_b = errors.notes) === null || _b === void 0 ? void 0 : _b.message, fullWidth: true, margin: "dense" })));
                     } }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_4__.Controller, { name: "color", control: control, render: function (_a) {
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_3__.Controller, { name: "color", control: control, render: function (_a) {
                         var field = _a.field;
-                        return react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", __assign({}, field, { type: "color" }));
+                        return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { style: { marginTop: "1rem" } },
+                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Color:"),
+                            react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", __assign({}, field, { type: "color" }))));
                     } }),
-                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], null,
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], { onClick: onClose, color: "secondary" }, "Cancel"),
-                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], { type: "submit", color: "primary" }, "Save"))))));
+                react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], null,
+                    mode === "edit" && onDelete && (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], { onClick: onDelete, color: "secondary" }, "Discard")),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], { type: "submit", color: "primary" }, mode === "edit" ? "Save" : "Create"),
+                    react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], { onClick: onClose, color: "secondary" }, "Cancel"))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EventPopup);
 
@@ -83383,7 +83441,14 @@ var EventProvider = function (_a) {
     var removeEvent = function (id) {
         setEvents(function (prevEvents) { return prevEvents.filter(function (event) { return event.id !== id; }); });
     };
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(EventContext.Provider, { value: { events: events, addEvent: addEvent, removeEvent: removeEvent } }, children));
+    var updateEvent = function (updatedEvent) {
+        setEvents(function (prevEvents) {
+            return prevEvents.map(function (event) {
+                return event.id === updatedEvent.id ? updatedEvent : event;
+            });
+        });
+    };
+    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(EventContext.Provider, { value: { events: events, addEvent: addEvent, removeEvent: removeEvent, updateEvent: updateEvent } }, children));
 };
 var useEventContext = function () {
     var context = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(EventContext);
@@ -83481,9 +83546,11 @@ var eventSchema = yup__WEBPACK_IMPORTED_MODULE_0__.object().shape({
         .required("Title is required"),
     start: yup__WEBPACK_IMPORTED_MODULE_0__.string()
         .required("Start date is required")
-        .test("is-future-date", "Start date must be in the future", function (value) {
+        .test("is-valid-date", "Start date must be today or in the future", function (value) {
         var date = new Date(value);
-        return !isNaN(date.getTime()) && date > new Date(); // Ensure valid date and future comparison
+        var today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to midnight for comparison
+        return !isNaN(date.getTime()) && date >= today; // Ensure valid date and allow today or future
     }),
     startTime: yup__WEBPACK_IMPORTED_MODULE_0__.string().required("Start time is required"),
     endTime: yup__WEBPACK_IMPORTED_MODULE_0__.string()

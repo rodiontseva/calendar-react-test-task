@@ -5,6 +5,7 @@ interface EventContextProps {
   events: EventData[];
   addEvent: (event: EventData) => void;
   removeEvent: (id: string) => void;
+  updateEvent: (event: EventData) => void;
 }
 
 const EventContext = createContext<EventContextProps | undefined>(undefined);
@@ -31,8 +32,18 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
   };
 
+  const updateEvent = (updatedEvent: EventData) => {
+    setEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event.id === updatedEvent.id ? updatedEvent : event
+      )
+    );
+  };
+
   return (
-    <EventContext.Provider value={{ events, addEvent, removeEvent }}>
+    <EventContext.Provider
+      value={{ events, addEvent, removeEvent, updateEvent }}
+    >
       {children}
     </EventContext.Provider>
   );

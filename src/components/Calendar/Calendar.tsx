@@ -1,24 +1,57 @@
 import React, { useState, useCallback } from "react";
+import { EventClickArg } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useEventContext } from "../../context/EventContext";
 import EventPopup from "./EventPopup";
+import { addDays } from "@fullcalendar/core/internal";
 
 const Calendar = () => {
-  const { events } = useEventContext();
+  const { events, updateEvent, removeEvent, addEvent } = useEventContext();
   const [dialogOpen, setPopupOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [popupMode, setPopupMode] = useState<"create" | "edit">("create");
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
 
   const handleDateClick = useCallback((arg: any) => {
-    setSelectedDate(arg.dateStr);
+    setSelectedEvent({ start: arg.dateStr, end: arg.dateStr }); // Prefill with clicked date
+    setPopupMode("create");
     setPopupOpen(true);
   }, []);
 
+  const handleEventClick = (clickInfo: EventClickArg) => {
+    setSelectedEvent({
+      id: clickInfo.event.id,
+      title: clickInfo.event.title,
+      start: clickInfo.event.startStr,
+      end: clickInfo.event.endStr,
+      color: clickInfo.event.backgroundColor,
+      notes: clickInfo.event.extendedProps.notes,
+    });
+    setPopupMode("edit");
+    setPopupOpen(true);
+  };
+
   const handleClose = () => {
     setPopupOpen(false);
-    setSelectedDate(null);
+    setSelectedEvent(null);
+  };
+
+  const handleSave = (eventData: any) => {
+    if (popupMode === "edit") {
+      updateEvent(eventData); // Update event in context
+    } else {
+      addEvent({ ...eventData, notes: eventData.notes || "" }); // Add notes if provided
+    }
+    handleClose();
+  };
+
+  const handleDelete = () => {
+    if (selectedEvent?.id) {
+      removeEvent(selectedEvent.id); // Delete event in context
+    }
+    handleClose();
   };
 
   const calendarEvents = events.map((event) => ({
@@ -27,9 +60,8 @@ const Calendar = () => {
     start: event.start,
     end: event.end,
     color: event.color,
+    notes: event.notes,
   }));
-
-  console.log("Events from context:", events);
 
   return (
     <div>
@@ -46,11 +78,15 @@ const Calendar = () => {
         editable={true}
         selectable={true}
         eventContent={renderEventContent}
+        eventClick={handleEventClick}
       />
       <EventPopup
         open={dialogOpen}
         onClose={handleClose}
-        initialDate={selectedDate}
+        onSave={handleSave}
+        onDelete={handleDelete}
+        initialData={selectedEvent}
+        mode={popupMode}
       />
     </div>
   );
